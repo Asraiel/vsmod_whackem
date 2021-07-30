@@ -16,10 +16,15 @@ namespace ShepardsStick
     public class ItemShepardsStick : Item
     {
         // TODOs
-        // - durability
         // - model
         // - recipe
-        // - configurable match strings for entity matching
+        // - particels
+        // - sounds
+        // - toolmode icons:
+        //      anger ò.ó
+        //      scare ó.ò
+        //      calm  u.u
+        // - check generation > 0
 
         private SkillItem[] toolModes;
 
@@ -29,29 +34,77 @@ namespace ShepardsStick
             {
                 if (this.IsLifestock(entitySel))
                 {
-                    if (byEntity.Api.Side == EnumAppSide.Server)
+                    var entity = entitySel.Entity;
+                    if (entity.Alive)
                     {
-                        var entity = entitySel.Entity;
-                        if (entity.Alive)
+                        var player = byEntity.World.PlayerByUid((byEntity as EntityPlayer).PlayerUID);
+                        var toolMode = this.GetToolMode(slot, player, blockSel);
+                        var modConfig = ModConfig.ModConfig.Current;
+                        var cost = this.GetCost(modConfig, toolMode);
+                        if (byEntity.Api.Side == EnumAppSide.Server)
                         {
                             if (!entity.HasBehavior<BehaviorShepardsStick>())
                             {
-                                //this.PrintMessage(byEntity, "adding behavior.");
                                 entity.AddBehavior(new BehaviorShepardsStick(entity));
                             }
                             var beh = entity.GetBehavior<BehaviorShepardsStick>();
                             if (beh != null)
                             {
-                                //this.PrintMessage(byEntity, "behavior found! triggering");
-
-                                var player = byEntity.World.PlayerByUid((byEntity as EntityPlayer).PlayerUID);
-                                var toolMode = this.GetToolMode(slot, player, blockSel);
                                 beh.OnHitByShepardsStick(toolMode);
                             }
+                            else
+                            {
+                                this.PrintMessage(byEntity, "Behavior not found!");
+                            }
+                            this.ApplyDurabilityDamageServer(cost, slot, byEntity);
+                        }
+                        else
+                        {
+                            this.ApplyDurabilityDamageClient(cost, slot, byEntity);
                         }
                     }
                 }
                 handling = EnumHandHandling.PreventDefaultAction;
+            }
+        }
+
+        private int GetCost(ModConfig.ModConfig modConfig, int toolMode)
+        {
+            switch (toolMode)
+            {
+                case 0:
+                    return modConfig.ShepardsStickAngerDurabilityCost;
+                case 1:
+                    return modConfig.ShepardsStickScareDurabilityCost;
+                case 2:
+                default:
+                    return modConfig.ShepardsStickCalmDurabilityCost;
+            }
+        }
+
+        private void ApplyDurabilityDamageServer(int durabilityDamage, ItemSlot slot, EntityAgent byEntity)
+        {
+            if (slot != null && slot.Itemstack != null)
+            {
+                var capi = byEntity.Api as ICoreServerAPI;
+                var world = capi.World as IWorldAccessor;
+                var serverplayer = world.PlayerByUid((byEntity as EntityPlayer).PlayerUID) as IServerPlayer;
+
+                slot.Itemstack.Collectible.DamageItem(world, byEntity, serverplayer.InventoryManager.ActiveHotbarSlot, durabilityDamage);
+                slot.MarkDirty();
+            }
+        }
+
+        private void ApplyDurabilityDamageClient(int durabilityDamage, ItemSlot slot, EntityAgent byEntity)
+        {
+            if (slot != null && slot.Itemstack != null)
+            {
+                var capi = byEntity.Api as ICoreClientAPI;
+                var world = capi.World as IWorldAccessor;
+                var player = world.PlayerByUid((byEntity as EntityPlayer).PlayerUID);
+
+                slot.Itemstack.Collectible.DamageItem(world, byEntity, player.InventoryManager.ActiveHotbarSlot, durabilityDamage);
+                slot.MarkDirty();
             }
         }
 
@@ -60,20 +113,28 @@ namespace ShepardsStick
             if (byEntity.Api.Side == EnumAppSide.Server)
             {
                 var byPlayer = byEntity.World.PlayerByUid((byEntity as EntityPlayer).PlayerUID) as IServerPlayer;
-                byPlayer.SendMessage(GlobalConstants.GeneralChatGroup, "[Server] " + message, EnumChatType.Notification);
+                byPlayer.SendMessage(GlobalConstants.GeneralChatGroup, "[Server] [WhackEm Mod] " + message, EnumChatType.Notification);
             }
             else
             {
                 var capi = byEntity.Api as ICoreClientAPI;
-                capi.ShowChatMessage("[Client] " + message);
+                capi.ShowChatMessage("[Client] [WhackEm Mod] " + message);
             }
         }
 
-        private bool IsLifestock(EntitySelection entitySel) // make configurable
+        private bool IsLifestock(EntitySelection entitySel)
         {
-            return entitySel.Entity.Code.Path.Contains("bighorn")
-                || entitySel.Entity.Code.Path.Contains("pig")
-                || entitySel.Entity.Code.Path.Contains("chicken");
+            var modConfig = ModConfig.ModConfig.Current;
+            var entities = modConfig.ShepardsStickAffectedEntities;
+
+            foreach (var entity in entities)
+            {
+                if (entitySel.Entity.Code.Path.Contains(entity))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public override void OnLoaded(ICoreAPI api)
