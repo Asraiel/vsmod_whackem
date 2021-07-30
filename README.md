@@ -1,2 +1,2 @@
 # vsmod_whackem
-vintage story mod to add a shepards stick
+Vintage Story mod to add a shepherd's stick for herding lifestock.
