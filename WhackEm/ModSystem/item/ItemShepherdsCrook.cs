@@ -18,7 +18,6 @@ namespace ShepherdsCrook
     public class ItemShepherdsCrook : Item
     {
         // TODOs
-        // - model
         // - check generation > 0
         // - particles
         // - sounds
@@ -51,9 +50,9 @@ namespace ShepherdsCrook
                         {
                             this.ApplyDurabilityDamageClient(cost, slot, byEntity);
                         }
+                        handling = EnumHandHandling.PreventDefaultAction;
                     }
                 }
-                handling = EnumHandHandling.PreventDefaultAction;
             }
         }
 
