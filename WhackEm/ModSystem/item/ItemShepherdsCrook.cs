@@ -17,12 +17,8 @@ namespace ShepherdsCrook
     public class ItemShepherdsCrook : Item
     {
         // TODOs
-        // - particles
-        // - sounds
-        // - toolmode icons:
-        //      anger ò.ó
-        //      scare ó.ò
-        //      calm  u.u
+        // - particles?
+        // - sounds?
 
         private SkillItem[] toolModes;
 
@@ -310,21 +306,62 @@ namespace ShepherdsCrook
             cr.SetSourceRGB(1D, 1D, 1D);
             switch (toolMode)
             {
-                case 0: // TODO ò.ó
-                    cr.MoveTo(11, 24);
-                    cr.LineTo(37, 10);
-                    cr.LineTo(37, 38);
-                    cr.LineTo(11, 24);
-                    cr.Fill();
+                // canvas is 48x48
+                case 0: // ò.ó
+                    // left eye
+                    cr.Arc(12, 26, 8, 0, 7D);
+                    cr.Stroke();
+                    // right eye
+                    cr.Arc(36, 26, 8, 0, 7D);
+                    cr.Stroke();
+                    // nose
+                    cr.Arc(24.5, 34, 1, 0, 7D);
+                    cr.Stroke();
+                    // left eyebrow
+                    cr.MoveTo(18, 14);
+                    cr.RelLineTo(-10, -8);
+                    cr.Stroke();
+                    // right eyebrow
+                    cr.MoveTo(30, 14);
+                    cr.RelLineTo(10, -8);
+                    cr.Stroke();
                     break;
-                case 1: // TODO ó.ò
-                    cr.Rectangle(16, 16, 16, 16);
-                    cr.Fill();
+                case 1: // ó.ò
+                    // left eye
+                    cr.Arc(12, 26, 8, 0, 7D);
+                    cr.Stroke();
+                    // right eye
+                    cr.Arc(36, 26, 8, 0, 7D);
+                    cr.Stroke();
+                    // nose
+                    cr.Arc(24.5, 34, 1, 0, 7D);
+                    cr.Stroke();
+                    // left eyebrow
+                    cr.MoveTo(18, 6);
+                    cr.RelLineTo(-10, 8);
+                    cr.Stroke();
+                    // right eyebrow
+                    cr.MoveTo(30, 6);
+                    cr.RelLineTo(10, 8);
+                    cr.Stroke();
                     break;
                 case 2: // TODO u.u
                 default:
-                    cr.Rectangle(16, 16, 16, 16);
-                    cr.Fill();
+                    // left eye
+                    cr.MoveTo(5, 18);
+                    cr.RelLineTo(0, 16);
+                    cr.RelLineTo(14, 0);
+                    cr.RelLineTo(0, -16);
+                    cr.Stroke();
+                    // right eye
+                    cr.MoveTo(29, 18);
+                    cr.RelLineTo(0, 16);
+                    cr.RelLineTo(14, 0);
+                    cr.RelLineTo(0, -16);
+                    cr.Stroke();
+                    // nose
+                    cr.Arc(24.5, 34, 1, 0, 7D);
+                    cr.Stroke();
                     break;
             }
         }
