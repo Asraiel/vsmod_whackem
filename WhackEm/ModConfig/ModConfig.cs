@@ -13,6 +13,7 @@ namespace ModConfig
 #pragma warning disable IDE1006 // Naming Styles
         public string ShepherdsCrookAffectedEntitiesDesc = "The entities affected by the Shepherd's Crook. Tested by checking whether one of the configured values is part of the entity code.";
         public string[] ShepherdsCrookAffectedEntities = new string[] { "bighorn", "pig", "chicken" };
+
         public string ShepherdsCrookAngerDurabilityCostDesc = "The durability cost of the anger mode.";
         public int ShepherdsCrookAngerDurabilityCost = 1;
         public string ShepherdsCrookAngerMinGenDesc = "The generation required to use anger mode.";
@@ -26,7 +27,10 @@ namespace ModConfig
         public string ShepherdsCrookCalmMinGenDesc = "The generation required to use calm mode.";
         public int ShepherdsCrookCalmMinGen = 5;
 
-        public static string filename = "whackem.json";
+        public string ShepherdsCrookParticlesDesc = "Whether or not to spawn particles on use.";
+        public bool ShepherdsCrookParticles = false;
+
+        public static string filename = "WhackEm.json";
 #pragma warning restore IDE1006 // Naming Styles
 
         public static void Load(ICoreAPI api)

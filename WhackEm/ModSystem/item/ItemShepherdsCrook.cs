@@ -8,6 +8,7 @@ namespace ShepherdsCrook
     using System.Text;
     using Cairo;
 #pragma warning disable IDE0005
+    using System.Linq;
 #pragma warning restore IDE0005
     using Vintagestory.API.Server;
     using Vintagestory.API.Common.Entities;
@@ -16,9 +17,6 @@ namespace ShepherdsCrook
 
     public class ItemShepherdsCrook : Item
     {
-        // TODOs
-        // - particles?
-        // - sounds?
 
         private SkillItem[] toolModes;
 
@@ -47,6 +45,11 @@ namespace ShepherdsCrook
                             }
                             else
                             {
+                                if (modConfig.ShepherdsCrookParticles)
+                                {
+                                    this.SpawnParticles(entitySel, byEntity, slot.Itemstack);
+                                }
+                                this.PlaySound(toolMode, byEntity);
                                 this.ApplyDurabilityDamageClient(cost, slot, byEntity);
                             }
                             handling = EnumHandHandling.PreventDefaultAction;
@@ -245,11 +248,11 @@ namespace ShepherdsCrook
             }
         }
 
-        private void SpawnParticles(EntitySelection entitySel, EntityAgent byEntity)
+        private void SpawnParticles(EntitySelection entitySel, EntityAgent byEntity, ItemStack itemStack)
         {
-            //var byPlayer = (byEntity as EntityPlayer).Player;
-            //var pos = blockSel.Position.ToVec3d().Add(blockSel.HitPosition.ToVec3f().ToVec3d());
-            //byEntity.World.SpawnCubeParticles(blockSel.Position, pos, 0.5f, 8, 0.7f, byPlayer);
+            var byPlayer = (byEntity as EntityPlayer).Player;
+            var pos = entitySel.Position.Add(entitySel.HitPosition.ToVec3f().ToVec3d());
+            byEntity.World.SpawnCubeParticles(pos, itemStack, 0.5f, 8, 0.7f, byPlayer);
         }
 
         private void PlaySound(int toolmode, EntityAgent byEntity)
@@ -269,22 +272,22 @@ namespace ShepherdsCrook
             }
         }
 
-        private void PlaySoundScare(EntityAgent byEntity)
-        {
-            //var pos = byEntity.Pos;
-            //byEntity.World.PlaySoundAt(new AssetLocation("sounds/tool/padlock"), pos.X, pos.Y, pos.Z, null);
-        }
-
         private void PlaySoundAnger(EntityAgent byEntity)
         {
-            //var pos = byEntity.Pos;
-            //byEntity.World.PlaySoundAt(new AssetLocation("sounds/tool/reinforce"), pos.X, pos.Y, pos.Z, null);
+            var pos = byEntity.Pos;
+            byEntity.World.PlaySoundAt(new AssetLocation("sounds/player/strike1"), pos.X, pos.Y, pos.Z, null);
+        }
+
+        private void PlaySoundScare(EntityAgent byEntity)
+        {
+            var pos = byEntity.Pos;
+            byEntity.World.PlaySoundAt(new AssetLocation("sounds/thud"), pos.X, pos.Y, pos.Z, null);
         }
 
         private void PlaySoundCalm(EntityAgent byEntity)
         {
-            //var pos = byEntity.Pos;
-            //byEntity.World.PlaySoundAt(new AssetLocation("sounds/tool/reinforce"), pos.X, pos.Y, pos.Z, null);
+            var pos = byEntity.Pos;
+            byEntity.World.PlaySoundAt(new AssetLocation("sounds/player/clothrepair"), pos.X, pos.Y, pos.Z, null);
         }
 
         public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
