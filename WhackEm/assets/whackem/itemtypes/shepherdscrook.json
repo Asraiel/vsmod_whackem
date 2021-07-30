@@ -1,0 +1,98 @@
+{
+  "code": "shepherdscrook",
+  "class": "ItemShepherdsCrook",
+  "creativeinventory": {
+    "general": [ "*" ],
+    "items": [ "*" ],
+    "tools": [ "*" ]
+  },
+  "shape": { "base": "item/shepherdscrook" },
+  "heldTpHitAnimation": "breaktool",
+  "maxstacksize": 1,
+  "durability": 500,
+  "attackRange": 2,
+  "attackpower": 0.7,
+  "damagedby": [ "blockbreaking", "attacking" ],
+  "combustibleProps": {
+    "burnTemperature": 600,
+    "burnDuration": 10
+  },
+  "attributes": {
+    "rackable": true,
+    "toolrackTransform": {
+      "rotation": {
+        "z": 270
+      },
+      "translation": {
+        "x": -0.5
+      },
+      "scale": 1.6
+    }
+  },
+  "glowLevelByType": {
+    "*-relative": 255,
+    "*-origin": 255
+  },
+  "fpHandTransform": {
+    "translation": {
+      "x": 0,
+      "y": -0.5,
+      "z": 0
+    },
+    "rotation": {
+      "x": -5,
+      "y": 0,
+      "z": 0
+    },
+    "scale": 2.5
+  },
+  "guiTransform": {
+    "translation": {
+      "x": 0.1,
+      "y": 0.8,
+      "z": 0
+    },
+    "rotation": {
+      "x": 45,
+      "y": 245,
+      "z": 225
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 1,
+      "z": 0.5
+    },
+    "scale": 1
+  },
+  "groundTransform": {
+    "translation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": {
+      "x": 0,
+      "y": 0,
+      "z": 90
+    },
+    "origin": {
+      "x": 0.5,
+      "y": 0.5,
+      "z": 0.5
+    },
+    "scale": 2
+  },
+  "tpHandTransform": {
+    "translation": {
+      "x": -0.25,
+      "y": -0.7,
+      "z": -0.5
+    },
+    "rotation": {
+      "x": 90,
+      "y": 0,
+      "z": -85
+    },
+    "scale": 0.9
+  }
+}

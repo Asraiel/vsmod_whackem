@@ -1,0 +1,35 @@
+[
+  {
+    "ingredientPattern": "K_S,_PB,S__",
+    "width": 3,
+    "height": 3,
+    "ingredients": {
+      "K": {
+        "type": "item",
+        "code": "game:knife-*",
+        "isTool": true
+      },
+      "S": {
+        "type": "item",
+        "code": "game:stick",
+        "quantity": 1
+      },
+      "B": {
+        "type": "item",
+        "code": "game:bone",
+        "quantity": 1
+      },
+      "P": {
+        "type": "item",
+        "code": "game:hide-pelt-*",
+        "allowedVariants": [ "small", "medium" ],
+        "quantity": 1
+      }
+    },
+    "name": "Shepherd's Crook",
+    "output": {
+      "type": "item",
+      "code": "whackem:shepherdscrook"
+    }
+  }
+]

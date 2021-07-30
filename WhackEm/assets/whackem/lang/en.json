@@ -1,0 +1,9 @@
+{
+  "whackem:item-shepherdscrook": "Shepherd's Crook",
+  "whackem:shepherdscrook_flavortext": "A straight, long stick with a carved bone hook at the end. Use it to herd your lifestock.",
+
+  "whackem:shepherdscrook_gentoolow": "Generation too low.",
+  "whackem:shepherdscrook_angermode": "Anger",
+  "whackem:shepherdscrook_scaremode": "Scare",
+  "whackem:shepherdscrook_calmmode": "Calm"
+}

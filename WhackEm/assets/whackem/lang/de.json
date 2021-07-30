@@ -1,0 +1,9 @@
+{
+  "whackem:item-shepherdscrook": "Hirtenstock",
+  "whackem:shepherdscrook_flavortext": "Ein langer gerader Stock mit einer gebogenen Spitze aus geschnitztem Knochen. Benutze ihn, um deine Herde zu kontrollieren.",
+
+  "whackem:shepherdscrook_gentoolow": "Generation zu niedrig.",
+  "whackem:shepherdscrook_angermode": "Aggressiv machen",
+  "whackem:shepherdscrook_scaremode": "Verängstigen",
+  "whackem:shepherdscrook_calmmode": "Beruhigen"
+}
