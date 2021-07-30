@@ -15,10 +15,16 @@ namespace ModConfig
         public string[] ShepherdsCrookAffectedEntities = new string[] { "bighorn", "pig", "chicken" };
         public string ShepherdsCrookAngerDurabilityCostDesc = "The durability cost of the anger mode.";
         public int ShepherdsCrookAngerDurabilityCost = 1;
+        public string ShepherdsCrookAngerMinGenDesc = "The generation required to use anger mode.";
+        public int ShepherdsCrookAngerMinGen = 1;
         public string ShepherdsCrookScareDurabilityCostDesc = "The durability cost of the scare mode.";
         public int ShepherdsCrookScareDurabilityCost = 1;
+        public string ShepherdsCrookScareMinGenDesc = "The generation required to use scare mode.";
+        public int ShepherdsCrookScareMinGen = 3;
         public string ShepherdsCrookCalmDurabilityCostDesc = "The durability cost of the calm mode.";
         public int ShepherdsCrookCalmDurabilityCost = 1;
+        public string ShepherdsCrookCalmMinGenDesc = "The generation required to use calm mode.";
+        public int ShepherdsCrookCalmMinGen = 5;
 
         public static string filename = "whackem.json";
 #pragma warning restore IDE1006 // Naming Styles

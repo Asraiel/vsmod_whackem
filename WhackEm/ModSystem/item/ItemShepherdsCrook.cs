@@ -8,7 +8,6 @@ namespace ShepherdsCrook
     using System.Text;
     using Cairo;
 #pragma warning disable IDE0005
-    using System.Linq;
 #pragma warning restore IDE0005
     using Vintagestory.API.Server;
     using Vintagestory.API.Common.Entities;
@@ -18,7 +17,6 @@ namespace ShepherdsCrook
     public class ItemShepherdsCrook : Item
     {
         // TODOs
-        // - check generation > 0
         // - particles
         // - sounds
         // - toolmode icons:
@@ -37,22 +35,53 @@ namespace ShepherdsCrook
                     var entity = entitySel.Entity;
                     if (entity.Alive)
                     {
+
                         var player = byEntity.World.PlayerByUid((byEntity as EntityPlayer).PlayerUID);
                         var toolMode = this.GetToolMode(slot, player, blockSel);
                         var modConfig = ModConfig.ModConfig.Current;
                         var cost = this.GetCost(modConfig, toolMode);
-                        if (byEntity.Api.Side == EnumAppSide.Server)
+
+
+                        if (this.IsGenHighEnough(modConfig, entity, toolMode))
                         {
-                            this.OnHitByShepherdsCrook(entity, toolMode);
-                            this.ApplyDurabilityDamageServer(cost, slot, byEntity);
+                            if (byEntity.Api.Side == EnumAppSide.Server)
+                            {
+                                this.OnHitByShepherdsCrook(entity, toolMode);
+                                this.ApplyDurabilityDamageServer(cost, slot, byEntity);
+                            }
+                            else
+                            {
+                                this.ApplyDurabilityDamageClient(cost, slot, byEntity);
+                            }
+                            handling = EnumHandHandling.PreventDefaultAction;
                         }
                         else
                         {
-                            this.ApplyDurabilityDamageClient(cost, slot, byEntity);
+                            this.PrintMessageClient(byEntity, Lang.Get("whackem:shepherdscrook_gentoolow"));
                         }
-                        handling = EnumHandHandling.PreventDefaultAction;
                     }
                 }
+            }
+        }
+
+        private bool IsGenHighEnough(ModConfig.ModConfig modConfig, Entity entity, int toolMode)
+        {
+            var gen = (entity as EntityAgent).WatchedAttributes.GetInt("generation");
+            var minGen = this.GetMinGen(modConfig, toolMode);
+            return gen >= minGen;
+        }
+
+        private int GetMinGen(ModConfig.ModConfig modConfig, int toolMode)
+        {
+            switch (toolMode)
+            {
+                case 0:
+                    return modConfig.ShepherdsCrookAngerMinGen;
+                case 1:
+                    return modConfig.ShepherdsCrookScareMinGen;
+                case 2:
+                default:
+                    return modConfig.ShepherdsCrookCalmMinGen;
             }
         }
 
@@ -137,7 +166,7 @@ namespace ShepherdsCrook
             }
         }
 
-        private void PrintMessage(EntityAgent byEntity, string message)
+        private void PrintDebugMessageBothSides(EntityAgent byEntity, string message)
         {
             if (byEntity.Api.Side == EnumAppSide.Server)
             {
@@ -148,6 +177,15 @@ namespace ShepherdsCrook
             {
                 var capi = byEntity.Api as ICoreClientAPI;
                 capi.ShowChatMessage("[Client] [WhackEm Mod] " + message);
+            }
+        }
+
+        private void PrintMessageClient(EntityAgent byEntity, string message)
+        {
+            if (byEntity.Api.Side != EnumAppSide.Server)
+            {
+                var capi = byEntity.Api as ICoreClientAPI;
+                capi.ShowChatMessage(message);
             }
         }
 
