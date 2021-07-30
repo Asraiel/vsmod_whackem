@@ -1,4 +1,4 @@
-namespace ShepardsStick
+namespace ShepherdsCrook
 {
     using System;
     using Vintagestory.API.Client;
@@ -11,20 +11,21 @@ namespace ShepardsStick
     using System.Linq;
 #pragma warning restore IDE0005
     using Vintagestory.API.Server;
-    using WhackEm.ModSystem.Entity.Behavior;
+    using Vintagestory.API.Common.Entities;
+    using Vintagestory.GameContent;
+    using System.Collections.Generic;
 
-    public class ItemShepardsStick : Item
+    public class ItemShepherdsCrook : Item
     {
         // TODOs
         // - model
-        // - recipe
-        // - particels
+        // - check generation > 0
+        // - particles
         // - sounds
         // - toolmode icons:
         //      anger ò.ó
         //      scare ó.ò
         //      calm  u.u
-        // - check generation > 0
 
         private SkillItem[] toolModes;
 
@@ -43,19 +44,7 @@ namespace ShepardsStick
                         var cost = this.GetCost(modConfig, toolMode);
                         if (byEntity.Api.Side == EnumAppSide.Server)
                         {
-                            if (!entity.HasBehavior<BehaviorShepardsStick>())
-                            {
-                                entity.AddBehavior(new BehaviorShepardsStick(entity));
-                            }
-                            var beh = entity.GetBehavior<BehaviorShepardsStick>();
-                            if (beh != null)
-                            {
-                                beh.OnHitByShepardsStick(toolMode);
-                            }
-                            else
-                            {
-                                this.PrintMessage(byEntity, "Behavior not found!");
-                            }
+                            this.OnHitByShepherdsCrook(entity, toolMode);
                             this.ApplyDurabilityDamageServer(cost, slot, byEntity);
                         }
                         else
@@ -68,17 +57,58 @@ namespace ShepardsStick
             }
         }
 
+        private void OnHitByShepherdsCrook(Entity entity, int toolMode)
+        {
+            var behEmo = entity.GetBehavior<EntityBehaviorEmotionStates>();
+            if (behEmo != null)
+            {
+                switch (toolMode)
+                {
+                    case 0: // anger
+                        behEmo.TryTriggerState("aggressiveondamage", 0);
+                        break;
+                    case 1: // scare
+                        behEmo.TryTriggerState("fleeondamage", 0);
+                        break;
+                    case 2: // calm
+                        this.KillAllActiveStates(behEmo);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        private void KillAllActiveStates(EntityBehaviorEmotionStates behEmo)
+        {
+            for (var i = 0; i < 4; i++)
+            {
+                try
+                {
+                    var dur = behEmo.ActiveStatesById[i];
+                    if (dur > 0)
+                    {
+                        behEmo.ActiveStatesById[i] = 0;
+                    }
+                }
+                catch (KeyNotFoundException)
+                {
+                    // ignore
+                }
+            }
+        }
+
         private int GetCost(ModConfig.ModConfig modConfig, int toolMode)
         {
             switch (toolMode)
             {
                 case 0:
-                    return modConfig.ShepardsStickAngerDurabilityCost;
+                    return modConfig.ShepherdsCrookAngerDurabilityCost;
                 case 1:
-                    return modConfig.ShepardsStickScareDurabilityCost;
+                    return modConfig.ShepherdsCrookScareDurabilityCost;
                 case 2:
                 default:
-                    return modConfig.ShepardsStickCalmDurabilityCost;
+                    return modConfig.ShepherdsCrookCalmDurabilityCost;
             }
         }
 
@@ -125,7 +155,7 @@ namespace ShepardsStick
         private bool IsLifestock(EntitySelection entitySel)
         {
             var modConfig = ModConfig.ModConfig.Current;
-            var entities = modConfig.ShepardsStickAffectedEntities;
+            var entities = modConfig.ShepherdsCrookAffectedEntities;
 
             foreach (var entity in entities)
             {
@@ -139,14 +169,14 @@ namespace ShepardsStick
 
         public override void OnLoaded(ICoreAPI api)
         {
-            this.toolModes = ObjectCacheUtil.GetOrCreate(api, "shepardsStickToolModes", () =>
+            this.toolModes = ObjectCacheUtil.GetOrCreate(api, "shepherdsCrookToolModes", () =>
             {
                 SkillItem[] modes;
 
                 modes = new SkillItem[3];
-                modes[0] = new SkillItem() { Code = new AssetLocation("anger"), Name = Lang.Get("whackem:shepardsstick_angermode") };
-                modes[1] = new SkillItem() { Code = new AssetLocation("scare"), Name = Lang.Get("whackem:shepardsstick_scaremode") };
-                modes[2] = new SkillItem() { Code = new AssetLocation("calm"), Name = Lang.Get("whackem:shepardsstick_calmmode") };
+                modes[0] = new SkillItem() { Code = new AssetLocation("anger"), Name = Lang.Get("whackem:shepherdscrook_angermode") };
+                modes[1] = new SkillItem() { Code = new AssetLocation("scare"), Name = Lang.Get("whackem:shepherdscrook_scaremode") };
+                modes[2] = new SkillItem() { Code = new AssetLocation("calm"), Name = Lang.Get("whackem:shepherdscrook_calmmode") };
 
                 if (api is ICoreClientAPI capi)
                 {
@@ -233,8 +263,7 @@ namespace ShepardsStick
 
         private string GetFlavorText()
         {
-            // TODO
-            return "";
+            return Lang.Get("whackem:shepherdscrook_flavortext");
         }
 
 #pragma warning disable IDE0060

@@ -1,12 +1,12 @@
 {
-  "code": "shepardsstick",
-  "class": "ItemShepardsStick",
+  "code": "shepherdscrook",
+  "class": "ItemShepherdsCrook",
   "creativeinventory": {
     "general": [ "*" ],
     "items": [ "*" ],
     "tools": [ "*" ]
   },
-  "shape": { "base": "item/shepardsstick" },
+  "shape": { "base": "item/shepherdscrook" },
   "maxstacksize": 1,
   "durability": 500,
   "glowLevelByType": {

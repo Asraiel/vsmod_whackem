@@ -11,14 +11,14 @@ namespace ModConfig
         public static ModConfig Current { get; set; }
 
 #pragma warning disable IDE1006 // Naming Styles
-        public string ShepardsStickAffectedEntitiesDesc = "The entities affected by the Shepard's Stick. Tested by checking whether one of the configured values is part of the entity code.";
-        public string[] ShepardsStickAffectedEntities = new string[] { "bighorn", "pig", "chicken" };
-        public string ShepardsStickAngerDurabilityCostDesc = "The durability cost of the anger mode.";
-        public int ShepardsStickAngerDurabilityCost = 1;
-        public string ShepardsStickScareDurabilityCostDesc = "The durability cost of the scare mode.";
-        public int ShepardsStickScareDurabilityCost = 1;
-        public string ShepardsStickCalmDurabilityCostDesc = "The durability cost of the calm mode.";
-        public int ShepardsStickCalmDurabilityCost = 1;
+        public string ShepherdsCrookAffectedEntitiesDesc = "The entities affected by the Shepherd's Crook. Tested by checking whether one of the configured values is part of the entity code.";
+        public string[] ShepherdsCrookAffectedEntities = new string[] { "bighorn", "pig", "chicken" };
+        public string ShepherdsCrookAngerDurabilityCostDesc = "The durability cost of the anger mode.";
+        public int ShepherdsCrookAngerDurabilityCost = 1;
+        public string ShepherdsCrookScareDurabilityCostDesc = "The durability cost of the scare mode.";
+        public int ShepherdsCrookScareDurabilityCost = 1;
+        public string ShepherdsCrookCalmDurabilityCostDesc = "The durability cost of the calm mode.";
+        public int ShepherdsCrookCalmDurabilityCost = 1;
 
         public static string filename = "whackem.json";
 #pragma warning restore IDE1006 // Naming Styles

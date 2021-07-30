@@ -3,7 +3,7 @@
   "modid": "whackem",
   "name": "WhackEm",
   "author": "Asraiel",
-  "description": "Adds a Shepard's Stick for managing domesticated animals.",
+  "description": "Adds a Shepherd's Crook for managing domesticated animals.",
   "version": "0.0.1",
   "dependencies": {
     "game": ""

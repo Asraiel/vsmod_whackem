@@ -3,7 +3,7 @@ namespace WhackEm.ModSystem
     using Vintagestory.API.Common;
     using Vintagestory.API.Server;
     using ModConfig;
-    using ShepardsStick;
+    using ShepherdsCrook;
 
     public class WhackEmSystem : ModSystem
     {
@@ -26,7 +26,7 @@ namespace WhackEm.ModSystem
             api.Logger.Debug("[WhackEm] Start");
             base.Start(api);
 
-            api.RegisterItemClass("ItemShepardsStick", typeof(ItemShepardsStick));
+            api.RegisterItemClass("ItemShepherdsCrook", typeof(ItemShepherdsCrook));
         }
     }
 }
